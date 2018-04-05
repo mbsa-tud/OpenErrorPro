@@ -94,9 +94,9 @@ class ModelView(QtGui.QGraphicsView):
             self, triggered=self.switch_view)#, shortcut="Ctrl+-")
         #self.actions['prism_save'] = QtGui.QAction("&Save model", \
         #    self, triggered=self.prism_save)
-        self.actions['prism_compute_sub_models_and_repetitions'] = \
+        self.actions['compute_sub_models_and_repetitions'] = \
             QtGui.QAction("&Sub-models and repetitions", \
-            self, triggered=self.prism_compute_sub_models_and_repetitions)
+            self, triggered=self.compute_sub_models_and_repetitions)
         # Actions for specific node right click
         self.actions['remove_element'] = QtGui.QAction("&Element", \
             self, triggered=self.remove_element)
@@ -235,10 +235,11 @@ class ModelView(QtGui.QGraphicsView):
             view_menu.addAction(self.actions['zoom_out'])
             view_menu.addAction(self.actions['switch_view'])
             menu.addMenu(view_menu)
-            prism_menu = QtGui.QMenu("&Compute")
-            prism_menu.addAction(self.actions['prism_compute_sub_models_and_repetitions'])
-            #prism_menu.addAction(self.actions['prism_save'])
-            menu.addMenu(prism_menu)
+            if [True for element in self.main_window.model.elements.values() \
+                if element['repetitions'] > 1 or element['sub_model']]:
+                compute_menu = QtGui.QMenu("&Compute")
+                compute_menu.addAction(self.actions['compute_sub_models_and_repetitions'])
+                menu.addMenu(compute_menu)
             menu.exec_(event.globalPos())
             event.accept()
 
@@ -488,7 +489,7 @@ class ModelView(QtGui.QGraphicsView):
         dialog = gui_dialogs.ElementPropertiesDialog(el_name, model, self)
         dialog.show()
 
-    def prism_compute_sub_models_and_repetitions(self):
+    def compute_sub_models_and_repetitions(self):
         """@brief computes sub models"""
         if self.main_window.checker.check_sub_models(self.main_window.model):
             self.main_window.command_le.setText(str("prism.compute_sub_models_and_repetitions(model)"))
