@@ -28,7 +28,7 @@ class ModelView(QtGui.QGraphicsView):
         self.setMouseTracking(True)
 
         # Layout:
-        # -----------------
+        # ----------------
         # |   ModelView  |
         # | ------------ |
         # | |  scene   | |
@@ -494,6 +494,8 @@ class ModelView(QtGui.QGraphicsView):
         if self.main_window.checker.check_sub_models(self.main_window.model):
             self.main_window.command_le.setText(str("prism.compute_sub_models_and_repetitions(model)"))
             self.main_window.execute_command()
+        else:
+            self.draw_model()
 
     def compute_MTTF(self):
         """@brief computes MTTF"""
@@ -501,6 +503,8 @@ class ModelView(QtGui.QGraphicsView):
             self.main_window.command_le.setText(\
                 str("prism.compute_MTTF(model, '" + self.selected_node[1] + "')"))
             self.main_window.execute_command()
+        else:
+            self.draw_model()
 
     def compute_P(self):
         """@brief computes MTTF"""
@@ -510,6 +514,8 @@ class ModelView(QtGui.QGraphicsView):
             self.main_window.command_le.setText(cmd)
             self.main_window.command_le.setCursorPosition(len(cmd)-2)
             self.main_window.command_le.setFocus()
+        else:
+            self.draw_model()
 
     def compute_P_single(self):
         """@brief computes MTTF"""
@@ -517,6 +523,8 @@ class ModelView(QtGui.QGraphicsView):
             self.main_window.command_le.setText(\
                 str("prism.compute_P_single(model, '" + self.selected_node[1] + "')"))
             self.main_window.execute_command()
+        else:
+            self.draw_model()
 
     def compute_N_failures(self):
         """@brief computes MTTF"""
@@ -526,6 +534,8 @@ class ModelView(QtGui.QGraphicsView):
             self.main_window.command_le.setText(cmd)
             self.main_window.command_le.setCursorPosition(len(cmd)-2)
             self.main_window.command_le.setFocus()
+        else:
+            self.draw_model()
 
     def compute_downtime(self):
         """@brief computes MTTF"""
@@ -535,4 +545,6 @@ class ModelView(QtGui.QGraphicsView):
             self.main_window.command_le.setPalette(self.main_window.palette_highlight)
             self.main_window.command_le.setText(cmd)
             self.main_window.command_le.setCursorPosition(len(cmd)-2)
-            self.main_window.command_le.setFocus()   
+            self.main_window.command_le.setFocus()
+        else:
+            self.draw_model()

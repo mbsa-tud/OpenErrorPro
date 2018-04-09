@@ -55,20 +55,25 @@ class PixItem(QtGui.QGraphicsPixmapItem):
         if el_name:
             self.model_view.selected_node = ['element', el_name]
             menu = QtGui.QMenu(self.model_view)
-            menu.addAction(self.model_view.actions["element_properties"])
+            element = self.main_window.model.elements[el_name]
+            if ((len(element['cf_outputs']) > 1) or \
+                (element['cf_prism_commands'])) or \
+                ((not element['sub_model'] and element['df_outputs']) or \
+                (element['ep_prism_commands'])):
+                menu.addAction(self.model_view.actions["element_properties"])
             if self.main_window.model.initial_element != el_name:
                 menu.addAction(self.model_view.actions["make_initial"])
             menu.addAction(self.model_view.actions["update_time"])
             menu.addAction(self.model_view.actions["update_repetitions"])
-            if not self.main_window.model.elements[el_name]['sub_model']:
+            if not element['sub_model']:
                 menu.addAction(self.model_view.actions["create_sub_model"])
             remove_menu = QtGui.QMenu("&Remove")
             remove_menu.addAction(self.model_view.actions["remove_element"])
-            if self.main_window.model.elements[el_name]['cf_outputs']:
+            if element['cf_outputs']:
                 remove_menu.addAction(self.model_view.actions["remove_control_flow"])
-            if self.main_window.model.elements[el_name]['df_outputs']:
+            if element['df_outputs']:
                 remove_menu.addAction(self.model_view.actions["remove_data_flow"])
-            if self.main_window.model.elements[el_name]['sub_model']:
+            if element['sub_model']:
                 remove_menu.addAction(self.model_view.actions["remove_sub_model"])
             menu.addMenu(remove_menu)
             menu.exec_(QtGui.QCursor.pos())
@@ -94,9 +99,10 @@ class PixItem(QtGui.QGraphicsPixmapItem):
             compute_menu = QtGui.QMenu("&Compute")
             compute_menu.addAction(self.model_view.actions["compute_P_single"])
             compute_menu.addAction(self.model_view.actions["compute_MTTF"])
+            compute_menu.addSeparator()
             compute_menu.addAction(self.model_view.actions["compute_P"])
-            compute_menu.addAction(self.model_view.actions["compute_N_failures"])
             compute_menu.addAction(self.model_view.actions["compute_downtime"])
+            compute_menu.addAction(self.model_view.actions["compute_N_failures"])
             menu.addMenu(compute_menu)
             menu.addAction(self.model_view.actions["update_failure"])
             menu.addAction(self.model_view.actions["remove_failure"])

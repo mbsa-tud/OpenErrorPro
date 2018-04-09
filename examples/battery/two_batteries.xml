@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<epl>
+    <model initial_element="Generator1">
+        <element name="Battery2">
+            <epc>(gPower2=HAS_POWER) &amp; (bLoad2&lt;9) -&gt; (bPower2'=HAS_POWER) &amp; (bLoad2'=bLoad2+1);</epc>
+            <epc>(gPower2=HAS_POWER) &amp; (bLoad2=9) -&gt; (bPower2'=HAS_POWER) &amp; (bLoad2'=bLoad2);</epc>
+            <epc>(gPower2=NO_POWER) &amp; (bLoad2&gt;0) -&gt; (bPower2'=HAS_POWER) &amp; (bLoad2'=bLoad2-1);</epc>
+            <epc>(gPower2=NO_POWER) &amp; (bLoad2=0) -&gt; (bPower2'=NO_POWER) &amp; (bLoad2'=bLoad2);</epc>
+        </element>
+        <element name="Device"/>
+        <element name="Generator2">
+            <epc>gState2=OK -&gt; 0.99:(gPower2'=HAS_POWER)&amp;(gState1'=OK) + 0.01:(gPower2'=NO_POWER)&amp;(gState2'=FAIL);</epc>
+            <epc>gState2=FAIL -&gt; 1: (gPower2'=NO_POWER)&amp;(gState2'=FAIL);</epc>
+        </element>
+        <element name="Battery1">
+            <epc>(gPower1=HAS_POWER) &amp; (bLoad1&lt;9) -&gt; (bPower1'=HAS_POWER) &amp; (bLoad1'=bLoad1+1);</epc>
+            <epc>(gPower1=HAS_POWER) &amp; (bLoad1=9) -&gt; (bPower1'=HAS_POWER) &amp; (bLoad1'=bLoad1);</epc>
+            <epc>(gPower1=NO_POWER) &amp; (bLoad1&gt;0) -&gt; (bPower1'=HAS_POWER) &amp; (bLoad1'=bLoad1-1);</epc>
+            <epc>(gPower1=NO_POWER) &amp; (bLoad1=0) -&gt; (bPower1'=NO_POWER) &amp; (bLoad1'=bLoad1);</epc>
+        </element>
+        <element name="Generator1">
+            <epc>gState1=OK -&gt; 0.99:(gPower1'=HAS_POWER)&amp;(gState1'=OK) + 0.01:(gPower1'=NO_POWER)&amp;(gState1'=FAIL);</epc>
+            <epc>gState1=FAIL -&gt; 1: (gPower1'=NO_POWER)&amp;(gState1'=FAIL);</epc>
+        </element>
+        <data name="gState1" values="OK, FAIL"/>
+        <data initial_value="4" name="bLoad2" values="0, 1, 2, 3, 4, 5, 6, 7, 8, 9"/>
+        <data name="gPower2" values="HAS_POWER, NO_POWER"/>
+        <data name="gState2" values="OK, FAIL"/>
+        <data name="gPower1" values="HAS_POWER, NO_POWER"/>
+        <data name="bPower2" values="HAS_POWER, NO_POWER"/>
+        <data name="bPower1" values="HAS_POWER, NO_POWER"/>
+        <data initial_value="3" name="bLoad1" values="0, 1, 2, 3, 4, 5, 6, 7, 8, 9"/>
+        <control_flow from="Battery2" to="Device"/>
+        <control_flow from="Device" to="Generator1"/>
+        <control_flow from="Generator2" to="Battery2"/>
+        <control_flow from="Battery1" to="Generator2"/>
+        <control_flow from="Generator1" to="Battery1"/>
+        <data_flow from="Battery2" to="bPower2"/>
+        <data_flow from="Battery2" to="bLoad2"/>
+        <data_flow from="gPower2" to="Battery2"/>
+        <data_flow from="bLoad2" to="Battery2"/>
+        <data_flow from="bPower2" to="Device"/>
+        <data_flow from="bPower1" to="Device"/>
+        <data_flow from="Generator2" to="gPower2"/>
+        <data_flow from="Generator2" to="gState2"/>
+        <data_flow from="gState2" to="Generator2"/>
+        <data_flow from="Battery1" to="bPower1"/>
+        <data_flow from="Battery1" to="bLoad1"/>
+        <data_flow from="gPower1" to="Battery1"/>
+        <data_flow from="bLoad1" to="Battery1"/>
+        <data_flow from="Generator1" to="gPower1"/>
+        <data_flow from="Generator1" to="gState1"/>
+        <data_flow from="gState1" to="Generator1"/>
+        <failure name="Generator1_Down">gState1=FAIL</failure>
+        <failure name="Failure">bPower1=NO_POWER &amp; bPower2=NO_POWER</failure>
+        <failure name="Battery1_Low">bLoad1&lt;3</failure>
+    </model>
+</epl>

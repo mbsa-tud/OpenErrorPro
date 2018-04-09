@@ -38,7 +38,8 @@ class ElementPropertiesDialog(QtGui.QDialog):
             df_inputs_text += "  " + df_input + "={"
             values = self.model.data[df_input]['values'] if \
             len(self.model.data[df_input]['values']) <= 4 else \
-            self.model.data[df_input]['values'][:2] + ['...', self.model.data[df_input]['values'][-1]]
+            self.model.data[df_input]['values'][:2] + ['...', \
+                self.model.data[df_input]['values'][-1]]
             for value in values:
                 df_inputs_text += str(value) + ", "
             df_inputs_text = df_inputs_text[:-2] + "}\n"
@@ -127,6 +128,7 @@ class ElementPropertiesDialog(QtGui.QDialog):
     def __init__(self, el_name, model, parent=None):
         """@brief constructor"""
         super(ElementPropertiesDialog, self).__init__(parent)
+        self.model_view = parent
         self.element = model.elements[el_name]
         self.el_name = el_name
         self.model = model
@@ -160,6 +162,7 @@ class ElementPropertiesDialog(QtGui.QDialog):
     def save_cfc(self):
         self.element['cf_prism_commands'] = \
             [cfc for cfc in self.cf_commands_te.toPlainText().split('\n') if cfc]
+        self.model_view.draw_model()
 
     def def_epc(self):
         self.ep_commands_te.clear()
@@ -177,4 +180,4 @@ class ElementPropertiesDialog(QtGui.QDialog):
         if not self.element['sub_model']:
             self.element['ep_prism_commands'] = \
             [epc for epc in self.ep_commands_te.toPlainText().split('\n') if epc]
-
+        self.model_view.draw_model()

@@ -19,8 +19,8 @@ class PRISM(object):
     def __init__(self, no_output=False, timeout=180):
         """@brief Constructor"""
         # Update these settings for your system !
-        self.prism_dir = "/Please/change/this/to/your/path/to/prism/bin"
-        #self.prism_dir = "/Users/andrey/SourceTree/ErrorPro/prism-4.4-osx64/bin"
+        #self.prism_dir = "/Please/change/this/to/your/path/to/prism/bin"
+        self.prism_dir = "/Users/andrey/ErrorPro6/prism-4.4-osx64/bin"
         self.prism_executable = "./prism"
         self.prism_model_file = "temp.pm"
         self.prism_properties_file = "temp.prop"
@@ -306,6 +306,7 @@ class PRISM(object):
             self.prism_model_file, \
             self.prism_properties_file, \
             "-exportresults", self.prism_results_file, \
+            "-maxiters", '100000', \
             "-timeout", str(self.timeout)]
         else:
             call_list = [self.prism_executable, \
@@ -313,6 +314,7 @@ class PRISM(object):
             self.prism_properties_file, \
             "-exportresults", str(self.prism_results_file+":csv,matrix"),\
             "-const", "step="+step_range, \
+            "-maxiters", '100000', \
             "-timeout", str(self.timeout)]
         if self.no_output:
             subprocess.call(call_list, stdout=subprocess.PIPE)
@@ -472,12 +474,14 @@ class PRISM(object):
             "-tr", str(tr), \
             "-exporttr", self.prism_ss_tr_file, \
             "-exportstates", self.prism_states_file, \
+            "-maxiters", '100000', \
             "-timeout", str(self.timeout)]
         else:
             call_list = [self.prism_executable, \
             self.prism_model_file, \
             "-ss", "-exportss", self.prism_ss_tr_file, \
             "-exportstates", self.prism_states_file, \
+            "-maxiters", '100000', \
             "-timeout", str(self.timeout)]
         if self.no_output:
             subprocess.call(call_list, stdout=subprocess.PIPE)

@@ -28,10 +28,15 @@ Syntax highlighted code block
 
 For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
 
-### Jekyll Themes
+### Installation
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/mbsa-tud/OpenErrorPro/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+Linux e.g. Ubuntu or Debian
 
-### Support or Contact
+sudo apt-get python3-pyside
+sudo apt-get python3-pygraphviz
+sudo apt-get python3-pyqt4
+sudo apt-get python3-colorama
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+### VM
+
+You can download the VM from ...

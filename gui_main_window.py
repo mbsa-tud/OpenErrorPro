@@ -74,7 +74,7 @@ class MainWindow(QtGui.QMainWindow):
         # top-level model
         self.top_model = self.model
         # command history
-        self.command_history = collections.deque(maxlen=10)
+        self.command_history = collections.deque(maxlen=100)
         # current command history id to iterate over the history
         self.command_history_id = 0
 
@@ -83,7 +83,7 @@ class MainWindow(QtGui.QMainWindow):
         #self.model_view QtGui.QGraphicsView()
 
         # Layout
-        self.setWindowTitle("Open ErrorPro")
+        self.setWindowTitle("OpenErrorPro")
         widget = QtGui.QWidget()
         self.setCentralWidget(widget)
         splitter = QtGui.QSplitter()
