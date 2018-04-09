@@ -1,37 +1,60 @@
-## Welcome to GitHub Pages
+## Demo video
 
-You can use the [editor on GitHub](https://github.com/mbsa-tud/OpenErrorPro/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+[![Demo video](https://img.youtube.com/vi/z38qVcFXYyQ/0.jpg)](https://www.youtube.com/watch?v=z38qVcFXYyQ)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## How to start
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
+### Get OpenErrorPro
 ```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+- sudo apt-get update
+- sudo apt-get install git
+- git clone https://github.com/mbsa-tud/OpenErrorPro.git
+- cd OpenErrorPro
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+### Get PRISM
+- download the PRISM model checker from http://www.prismmodelchecker.org/download.php
+- extract it to the OpenErrorPro folder e.g.
+```markdown 
+OpenErrorPro/prism-4.4-linux64
+```
+- run the install script:
+```markdown
+sh OpenErrorPro/prism-4.4-linux64/install.sh
+```
+- install JRE:
+```markdown
+sudo apt-get install default-jre
+```
+- check that prism is working:
+```markdown
+./prism-4.4-linux64/bin/xprism
+```
 
-### Jekyll Themes
+### Setup OpenErrorPro
+- open 
+```markdown
+epl_prism.py
+```
+- setup the path to the prism bin folder:
+```markdown
+self.prism_dir = "/home/errorpro/Desktop/OpenErrorPro/prism-4.4-linux64/bin"
+```
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/mbsa-tud/OpenErrorPro/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+### Install python3 libs
+```markdown
+- sudo apt-get install python3-pyside
+- sudo apt-get install python3-colorama
+- sudo apt-get install python3-matplotlib
+- sudo apt-get install python3-pygraphviz
+- sudo apt-get install python3-pyqt4)-
+```
 
-### Support or Contact
+### Run
+```markdown
+- python3 errorpro.py
+```
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+## VM
+
+Check out our [Virtual machine](https://)
