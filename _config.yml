@@ -1,2 +1,5 @@
 theme: jekyll-theme-minimal
 logo: /errorpro.png
+title: OpenErrorPro
+description: Stochastic Error Propagation Analysis
+email: andrey.morozov@tu-dresden.de
