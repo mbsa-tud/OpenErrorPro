@@ -47,7 +47,7 @@ self.prism_dir = "/home/errorpro/Desktop/OpenErrorPro/prism-4.4-linux64/bin"
 - sudo apt-get install python3-colorama
 - sudo apt-get install python3-matplotlib
 - sudo apt-get install python3-pygraphviz
-- sudo apt-get install python3-pyqt4)-
+- sudo apt-get install python3-pyqt4
 ```
 
 ### Run
