@@ -4,3 +4,4 @@ description: Stochastic Error Propagation Analysis.
 show_downloads: true
 google_analytics:
 email: andrey.morozov@tu-dresden.de
+theme: jekyll-theme-minimal
