@@ -57,7 +57,7 @@ self.prism_dir = "/home/errorpro/Desktop/OpenErrorPro/prism-4.4-linux64/bin"
 
 ## VM
 
-Check out our [Virtual machine](https://)
+Check out our [Virtual machine](https://wwwpub.zih.tu-dresden.de/~amorozov/OpenErrorPro.ova)
 
 ## License
 
