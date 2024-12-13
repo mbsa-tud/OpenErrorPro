@@ -55,6 +55,11 @@ self.prism_dir = "/home/errorpro/Desktop/OpenErrorPro/prism-4.4-linux64/bin"
 - python3 errorpro.py
 ```
 
-## VM
+## macOS
 
+Have Homebrew installed
+
+- pip3 install --global-option=build_ext --global-option="-I$(brew --prefix graphviz)/include"  --global-option="-L$(brew --prefix graphviz)/lib" pygraphviz
+- pip3 install -r requirements.txt
+- 
 Check out our [Virtual machine](https://wwwpub.zih.tu-dresden.de/~amorozov/OpenErrorPro.ova)

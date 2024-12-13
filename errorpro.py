@@ -1,19 +1,21 @@
 """
 ErrorPro V6.
-PySide GUI main function.
+PySide6 GUI main function.
 """
 
 import sys
-from PySide import QtGui
+from PySide6 import QtWidgets
 
 import gui_main_window
 
+
 def main():
     """@brief start GUI"""
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     main_window = gui_main_window.MainWindow()
     main_window.showMaximized()
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
+
 
 if __name__ == '__main__':
     main()

@@ -8,10 +8,8 @@ import errno
 import itertools
 import subprocess
 
-# keep this sequence of imports
-import matplotlib
-matplotlib.use('qt4agg')
 import matplotlib.pyplot as plt
+
 
 class PRISM(object):
     """@brief PRISM class """
@@ -19,8 +17,7 @@ class PRISM(object):
     def __init__(self, no_output=False, timeout=180):
         """@brief Constructor"""
         # Update these settings for your system !
-        #self.prism_dir = "/Please/change/this/to/your/path/to/prism/bin"
-        self.prism_dir = "/Users/andrey/ErrorPro6/prism-4.4-osx64/bin"
+        self.prism_dir = "/opt/prism-4.8.1-mac64-x86/bin"
         self.prism_executable = "./prism"
         self.prism_model_file = "temp.pm"
         self.prism_properties_file = "temp.prop"
@@ -91,7 +88,7 @@ class PRISM(object):
         res = "//Data values consts\n"
         for key, value in values.items():
             res += "const int " + value + \
-                    "=" + str(key) + ";\n"
+                   "=" + str(key) + ";\n"
         return res
 
     @staticmethod
@@ -103,8 +100,8 @@ class PRISM(object):
             res += "(cf'=stop);"
         else:
             for cf_output in el_value['cf_outputs']:
-                res += str(1/len(el_value['cf_outputs'])) + \
-                ":(cf'=" + cf_output + ") + "
+                res += str(1 / len(el_value['cf_outputs'])) + \
+                       ":(cf'=" + cf_output + ") + "
             res = res[:-3] + ";"
         return res
 
@@ -113,7 +110,7 @@ class PRISM(object):
         """@brief creates cf prism module"""
         res = "//Control flow commands\n"
         res += "module control_flow\n"
-        res += "\tcf:[0.." + str(len(model.elements)) +"] init " + model.initial_element + ";\n"
+        res += "\tcf:[0.." + str(len(model.elements)) + "] init " + model.initial_element + ";\n"
         for el_name, el_value in model.elements.items():
             res += "\t//Element " + el_name
             if el_value['df_inputs']:
@@ -167,7 +164,7 @@ class PRISM(object):
                 for df_output in el_value['df_outputs']:
                     ok_value = model.data[df_output]['initial_value']
                     err_value = next((val for val in model.data[df_output]['values'] \
-                        if val != ok_value), ok_value)
+                                      if val != ok_value), ok_value)
                     res += "(" + df_output + "'=" + str(err_value) + ") & "
                 res = res[:-3] + ";"
                 commands.append(res)
@@ -187,10 +184,10 @@ class PRISM(object):
         for el_name, el_value in model.elements.items():
             if el_value['sub_model']:
                 model.logger.warning('Sub-model of element \"' + el_name + \
-                    '\" is ignored in the PRISM model.')
+                                     '\" is ignored in the PRISM model.')
             if el_value['repetitions'] > 1:
                 model.logger.warning('Repetitions of element \"' + el_name + \
-                    '\" are ignored in the PRISM model.')
+                                     '\" are ignored in the PRISM model.')
             if el_value['df_outputs']:
                 res += "\t//Element " + el_name
                 if el_value['df_inputs']:
@@ -211,7 +208,7 @@ class PRISM(object):
         res = "//Time reward\n"
         res += "rewards \"time\"\n"
         for el_name, el_value in model.elements.items():
-            res += "\tcf=" + el_name + ":" + str(el_value['time'])+ ";\n"
+            res += "\tcf=" + el_name + ":" + str(el_value['time']) + ";\n"
         res += "endrewards\n"
         return res
 
@@ -249,7 +246,7 @@ class PRISM(object):
         d_ins = model.elements[el_name]['df_inputs']
         d_outs = model.elements[el_name]['df_outputs']
         d_ins_outs = set(d_ins + d_outs)
-        el_data = {d_name:d_value for d_name, d_value in model.data.items() if d_name in d_ins_outs}
+        el_data = {d_name: d_value for d_name, d_value in model.data.items() if d_name in d_ins_outs}
         for d_name, d_value in el_data.items():
             res += "\t" + d_name + " : [0 .. " + str(PRISM.__get_maximum_value(model)) + "] init "
             if init_values and d_name in init_values:
@@ -273,8 +270,8 @@ class PRISM(object):
         try:
             os.remove(filename)
         except OSError as exception:
-            if exception.errno != errno.ENOENT: # errno.ENOENT = no such file or directory
-                raise # re-raise exception if a different error occurred
+            if exception.errno != errno.ENOENT:  # errno.ENOENT = no such file or directory
+                raise  # re-raise exception if a different error occurred
 
     def delete_temp_files(self):
         """@brief removes temporary PRISM files"""
@@ -303,19 +300,19 @@ class PRISM(object):
         model_file.close()
         if not step_range:
             call_list = [self.prism_executable, \
-            self.prism_model_file, \
-            self.prism_properties_file, \
-            "-exportresults", self.prism_results_file, \
-            "-maxiters", '100000', \
-            "-timeout", str(self.timeout)]
+                         self.prism_model_file, \
+                         self.prism_properties_file, \
+                         "-exportresults", self.prism_results_file, \
+                         "-maxiters", '100000', \
+                         "-timeout", str(self.timeout)]
         else:
             call_list = [self.prism_executable, \
-            self.prism_model_file, \
-            self.prism_properties_file, \
-            "-exportresults", str(self.prism_results_file+":csv,matrix"),\
-            "-const", "step="+step_range, \
-            "-maxiters", '100000', \
-            "-timeout", str(self.timeout)]
+                         self.prism_model_file, \
+                         self.prism_properties_file, \
+                         "-exportresults", str(self.prism_results_file + ":csv,matrix"), \
+                         "-const", "step=" + step_range, \
+                         "-maxiters", '100000', \
+                         "-timeout", str(self.timeout)]
         if self.no_output:
             subprocess.call(call_list, stdout=subprocess.PIPE)
         else:
@@ -380,12 +377,12 @@ class PRISM(object):
         properties = "P=? [ F<=step " + f_name + "]\n" + "R{\"time\"}=? [  C<=step ]"
         prism_res = self.run_prism(prism_model, properties, step_range=step_range)
         steps = [self.__check_prism_result(step, model.logger) \
-            for step in prism_res[2].split(',')]
+                 for step in prism_res[2].split(',')]
         times = [self.__check_prism_result(time, model.logger) \
-            for time in prism_res[8].split(',')]
+                 for time in prism_res[8].split(',')]
         probs = [self.__check_prism_result(prob, model.logger) \
-            for prob in prism_res[3].split(',')]
-        res = {'steps':steps, 'time':times, 'P':probs}
+                 for prob in prism_res[3].split(',')]
+        res = {'steps': steps, 'time': times, 'P': probs}
         if show_plot:
             plt.figure()
             plt.plot(times, probs, "bo-")
@@ -412,12 +409,12 @@ class PRISM(object):
         properties = "R{\"Failure\"}=? [ C<=step ]\n" + "R{\"time\"}=? [  C<=step ]"
         prism_res = self.run_prism(prism_model, properties, step_range=step_range)
         steps = [self.__check_prism_result(step, model.logger) \
-            for step in prism_res[2].split(',')]
+                 for step in prism_res[2].split(',')]
         times = [self.__check_prism_result(time, model.logger) \
-            for time in prism_res[8].split(',')]
+                 for time in prism_res[8].split(',')]
         n_failures = [self.__check_prism_result(n_failure, model.logger) \
-            for n_failure in prism_res[3].split(',')]
-        res = {'steps':steps, 'time':times, 'P':n_failures}
+                      for n_failure in prism_res[3].split(',')]
+        res = {'steps': steps, 'time': times, 'P': n_failures}
         if show_plot:
             plt.figure()
             plt.plot(times, n_failures, "bo-")
@@ -438,19 +435,19 @@ class PRISM(object):
         prism_model += "//Down time rewards\n"
         prism_model += "rewards \"downtime\"\n"
         for el_name, el_value in model.elements.items():
-            prism_model += "\t" + f_name +" & cf=" + el_name + ":" + str(el_value['time'])+ ";\n"
+            prism_model += "\t" + f_name + " & cf=" + el_name + ":" + str(el_value['time']) + ";\n"
         prism_model += "endrewards\n"
         prism_model += "//Step number for properties\n"
         prism_model += "const int step;\n"
         properties = "R{\"downtime\"}=? [ C<=step ]\n" + "R{\"time\"}=? [ C<=step ]"
         prism_res = self.run_prism(prism_model, properties, step_range=step_range)
         steps = [self.__check_prism_result(step, model.logger) \
-            for step in prism_res[2].split(',')]
+                 for step in prism_res[2].split(',')]
         times = [self.__check_prism_result(time, model.logger) \
-            for time in prism_res[8].split(',')]
+                 for time in prism_res[8].split(',')]
         dtimes = [self.__check_prism_result(dtime, model.logger) \
-            for dtime in prism_res[3].split(',')]
-        res = {'steps':steps, 'time':times, 'downtime':dtimes}
+                  for dtime in prism_res[3].split(',')]
+        res = {'steps': steps, 'time': times, 'downtime': dtimes}
         if show_plot:
             plt.figure()
             plt.plot(times, dtimes, "bo-")
@@ -470,19 +467,19 @@ class PRISM(object):
         self.save(prism_model, file_name=self.prism_model_file)
         if tr:
             call_list = [self.prism_executable, \
-            self.prism_model_file, \
-            "-tr", str(tr), \
-            "-exporttr", self.prism_ss_tr_file, \
-            "-exportstates", self.prism_states_file, \
-            "-maxiters", '100000', \
-            "-timeout", str(self.timeout)]
+                         self.prism_model_file, \
+                         "-tr", str(tr), \
+                         "-exporttr", self.prism_ss_tr_file, \
+                         "-exportstates", self.prism_states_file, \
+                         "-maxiters", '100000', \
+                         "-timeout", str(self.timeout)]
         else:
             call_list = [self.prism_executable, \
-            self.prism_model_file, \
-            "-ss", "-exportss", self.prism_ss_tr_file, \
-            "-exportstates", self.prism_states_file, \
-            "-maxiters", '100000', \
-            "-timeout", str(self.timeout)]
+                         self.prism_model_file, \
+                         "-ss", "-exportss", self.prism_ss_tr_file, \
+                         "-exportstates", self.prism_states_file, \
+                         "-maxiters", '100000', \
+                         "-timeout", str(self.timeout)]
         if self.no_output:
             subprocess.call(call_list, stdout=subprocess.PIPE)
         else:
@@ -502,8 +499,8 @@ class PRISM(object):
             non_zero_probs = [prob for prob in probs if prob > 0]
             if logger:
                 logger.warning("Summ of computed probabilities (" + str(probs_sum) + \
-                    ") less than 1, " + str(non_zero_probs) + \
-                    ", corrected, but might cause problems")
+                               ") less than 1, " + str(non_zero_probs) + \
+                               ", corrected, but might cause problems")
             for index, value in enumerate(probs):
                 if value > 0:
                     probs[index] = probs[index] + 1.0 - probs_sum
@@ -524,22 +521,22 @@ class PRISM(object):
                 ep_prism_command += "(true) -> "
 
             prism_model = PRISM.generate_prism_model_for_repetitions(model, \
-                el_name, init_values=init_values)
+                                                                     el_name, init_values=init_values)
             [tr_probs, state_lines] = self.__run_prism_ss_tr(prism_model, \
-                tr=the_element['repetitions'], logger=model.logger)
+                                                             tr=the_element['repetitions'], logger=model.logger)
             #get vector of data names
             d_names = state_lines[0][1:-1].split(',')
             #get steady states with >0 probabilities
             states = [state.split(':')[1][1:-1].split(',') \
-                for i, state in enumerate(state_lines) if i > 0]
+                      for i, state in enumerate(state_lines) if i > 0]
             #aggregate for the df outputs only
-            reduced_states = [[s_val for (d_name, s_val) in\
-                zip(d_names, state) if d_name in the_element['df_outputs']]\
-                for state in states]
+            reduced_states = [[s_val for (d_name, s_val) in \
+                               zip(d_names, state) if d_name in the_element['df_outputs']] \
+                              for state in states]
             #reduce data names vector for the df outputs only
             reduced_d_names = [d_name for d_name in d_names if d_name in the_element['df_outputs']]
             if not reduced_d_names:
-                model.logger.error(\
+                model.logger.error( \
                     "Something went wrong! reduced_d_names empty in __generate_ep_prism_command_repetitions")
             tr_states = {}
             for (i, r_state) in enumerate(reduced_states):
@@ -581,11 +578,11 @@ class PRISM(object):
             d_names = state_lines[0][1:-1].split(',')
             #get steady states with >0 probabilities
             states = [state.split(':')[1][1:-1].split(',') \
-                for i, state in enumerate(state_lines) if i > 0]
+                      for i, state in enumerate(state_lines) if i > 0]
             #aggregate for the df outputs only
-            reduced_states = [[s_val for (d_name, s_val) in\
-                zip(d_names, state) if d_name in host_element['df_outputs']]\
-                for state in states]
+            reduced_states = [[s_val for (d_name, s_val) in \
+                               zip(d_names, state) if d_name in host_element['df_outputs']] \
+                              for state in states]
             #reduce data names vector for the df outputs only
             reduced_d_names = [d_name for d_name in d_names if d_name in host_element['df_outputs']]
             steady_states = {}
@@ -615,14 +612,14 @@ class PRISM(object):
         the_element = model.elements[el_name]
         #get lists of all df input values
         values_vectors = [model.data[df_input]['values'] \
-            for df_input in the_element['df_inputs']]
+                          for df_input in the_element['df_inputs']]
         #prepare models for all possible combinations of input values
         for init_values_vector in itertools.product(*values_vectors):
             init_values = dict(zip(the_element['df_inputs'], init_values_vector))
             #compute and generate prism commands
             model.logger.message('Computing repetitions with inputs: ' + str(init_values))
             ep_prism_command = self.__generate_ep_prism_command_repetitions(model, \
-                el_name, init_values)
+                                                                            el_name, init_values)
             if ep_prism_command:
                 ep_prism_commands.append(ep_prism_command)
         return ep_prism_commands
@@ -635,8 +632,8 @@ class PRISM(object):
                 # generate prism commands istead of sub model
                 model.logger.message('Computing sub model of element \"' + el_name + '\" ... ')
                 model.elements[el_name]['ep_prism_commands'] = \
-                    self.compute_sub_models_and_repetitions(\
-                    el_value['sub_model'], el_value)
+                    self.compute_sub_models_and_repetitions( \
+                        el_value['sub_model'], el_value)
                 # compute execution time of the compund element
                 time = self.compute_execution_time(el_value['sub_model'])
                 model.elements[el_name]['sub_model'] = None
@@ -645,7 +642,7 @@ class PRISM(object):
             if el_value['repetitions'] > 1:
                 # generate prism commands istead of repetitions
                 model.logger.message('Computing repetitions of element \"' + el_name + '\" ... ')
-                model.elements[el_name]['ep_prism_commands'] = self.compute_repetitions(\
+                model.elements[el_name]['ep_prism_commands'] = self.compute_repetitions( \
                     model, el_name)
                 # compute execution time of the compund element
                 model.elements[el_name]['time'] *= model.elements[el_name]['repetitions']
@@ -658,14 +655,14 @@ class PRISM(object):
         ep_prism_commands = []
         #get lists of all df input values
         values_vectors = [model.data[df_input]['values'] \
-            for df_input in host_element['df_inputs']]
+                          for df_input in host_element['df_inputs']]
         #prepare models for all possible combinations of input values
         for init_values_vector in itertools.product(*values_vectors):
             init_values = dict(zip(host_element['df_inputs'], init_values_vector))
             #compute and generate prism commands
             model.logger.message('Computing sub model with inputs: ' + str(init_values))
             ep_prism_command = self.__generate_ep_prism_command_sub_model(model, \
-                host_element, init_values)
+                                                                          host_element, init_values)
             if ep_prism_command:
                 ep_prism_commands.append(ep_prism_command)
         return ep_prism_commands

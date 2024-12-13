@@ -1,14 +1,14 @@
 """
 ErrorPro V6.
-PySide GUI element properties.
+PySide6 GUI element properties.
 """
 
-from PySide import QtGui
-from PySide import QtCore
+from PySide6 import QtWidgets
+from PySide6 import QtCore
 
 from epl_prism import PRISM
 
-class ElementPropertiesDialog(QtGui.QDialog):
+class ElementPropertiesDialog(QtWidgets.QDialog):
     """@brief element properties dialog"""
     def __create_current_cf_text(self):
         """@brief CF inputs"""
@@ -62,29 +62,29 @@ class ElementPropertiesDialog(QtGui.QDialog):
 
     def __add_cf_part(self):
         """@brief generate layout for cf part"""
-        cfc_res_btn = QtGui.QPushButton("Restore")
+        cfc_res_btn = QtWidgets.QPushButton("Restore")
         cfc_res_btn.clicked.connect(self.res_cfc)
-        cfc_def_btn = QtGui.QPushButton("Default")
+        cfc_def_btn = QtWidgets.QPushButton("Default")
         cfc_def_btn.clicked.connect(self.def_cfc)
-        cfc_save_btn = QtGui.QPushButton("Save")
+        cfc_save_btn = QtWidgets.QPushButton("Save")
         cfc_save_btn.clicked.connect(self.save_cfc)
-        cfc_label = QtGui.QLabel("Control flow commands")
+        cfc_label = QtWidgets.QLabel("Control flow commands")
         cf_current_cf_text = self.__create_current_cf_text()
         df_inputs_text = self.__create_df_inputs_text()
         cf_outputs_text = self.__create_cf_outputs_text()
-        cfc_in_label = QtGui.QLabel(cf_current_cf_text+df_inputs_text)
+        cfc_in_label = QtWidgets.QLabel(cf_current_cf_text+df_inputs_text)
         cfc_in_label.setAlignment(QtCore.Qt.AlignTop)
-        cfc_out_label = QtGui.QLabel(cf_outputs_text)
+        cfc_out_label = QtWidgets.QLabel(cf_outputs_text)
         cfc_out_label.setAlignment(QtCore.Qt.AlignTop)
-        self.cf_commands_te = QtGui.QTextEdit()
+        self.cf_commands_te = QtWidgets.QTextEdit()
         if self.element['cf_prism_commands']:
             for cfc in self.element['cf_prism_commands']:
                 self.cf_commands_te.append(cfc)
         self.layout.addWidget(cfc_label)
-        cfc_hbox_1 = QtGui.QHBoxLayout()
+        cfc_hbox_1 = QtWidgets.QHBoxLayout()
         cfc_hbox_1.addWidget(cfc_in_label)
         cfc_hbox_1.addWidget(cfc_out_label)
-        cfc_hbox_2 = QtGui.QHBoxLayout()
+        cfc_hbox_2 = QtWidgets.QHBoxLayout()
         cfc_hbox_2.addStretch(1)
         cfc_hbox_2.addWidget(cfc_def_btn)
         cfc_hbox_2.addWidget(cfc_res_btn)
@@ -95,28 +95,28 @@ class ElementPropertiesDialog(QtGui.QDialog):
 
     def __add_ep_part(self):
         """@brief generate layout for ep part"""
-        epc_res_btn = QtGui.QPushButton("Restore")
+        epc_res_btn = QtWidgets.QPushButton("Restore")
         epc_res_btn.clicked.connect(self.res_epc)
-        epc_def_btn = QtGui.QPushButton("Default")
+        epc_def_btn = QtWidgets.QPushButton("Default")
         epc_def_btn.clicked.connect(self.def_epc)
-        epc_save_btn = QtGui.QPushButton("Save")
+        epc_save_btn = QtWidgets.QPushButton("Save")
         epc_save_btn.clicked.connect(self.save_epc)
-        epc_label = QtGui.QLabel("Error propagation commands")
+        epc_label = QtWidgets.QLabel("Error propagation commands")
         df_inputs_text = self.__create_df_inputs_text()
         df_outputs_text = self.__create_df_outputs_text()
-        epc_in_label = QtGui.QLabel(df_inputs_text)
+        epc_in_label = QtWidgets.QLabel(df_inputs_text)
         epc_in_label.setAlignment(QtCore.Qt.AlignTop)
-        epc_out_label = QtGui.QLabel(df_outputs_text)
+        epc_out_label = QtWidgets.QLabel(df_outputs_text)
         epc_out_label.setAlignment(QtCore.Qt.AlignTop)
-        self.ep_commands_te = QtGui.QTextEdit()
+        self.ep_commands_te = QtWidgets.QTextEdit()
         if self.element['ep_prism_commands']:
             for epc in self.element['ep_prism_commands']:
                 self.ep_commands_te.append(epc)
         self.layout.addWidget(epc_label)
-        epc_hbox_1 = QtGui.QHBoxLayout()
+        epc_hbox_1 = QtWidgets.QHBoxLayout()
         epc_hbox_1.addWidget(epc_in_label)
         epc_hbox_1.addWidget(epc_out_label)
-        epc_hbox_2 = QtGui.QHBoxLayout()
+        epc_hbox_2 = QtWidgets.QHBoxLayout()
         epc_hbox_2.addStretch(1)
         epc_hbox_2.addWidget(epc_def_btn)
         epc_hbox_2.addWidget(epc_res_btn)
@@ -135,16 +135,16 @@ class ElementPropertiesDialog(QtGui.QDialog):
         self.setWindowTitle('Properties of ' + el_name)
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose)
         self.setGeometry(0, 0, 600, 600)
-        self.layout = QtGui.QVBoxLayout()
+        self.layout = QtWidgets.QVBoxLayout()
         if (len(self.element['cf_outputs']) > 1) or \
             (self.element['cf_prism_commands']):
             self.__add_cf_part()
         if (not self.element['sub_model'] and self.element['df_outputs']) or \
             (self.element['ep_prism_commands']):
             if len(self.element['cf_outputs']) > 1:
-                line = QtGui.QFrame()
-                line.setFrameShape(QtGui.QFrame.HLine)
-                line.setFrameShadow(QtGui.QFrame.Sunken)
+                line = QtWidgets.QFrame()
+                line.setFrameShape(QtWidgets.QFrame.HLine)
+                line.setFrameShadow(QtWidgets.QFrame.Sunken)
                 self.layout.addWidget(line)
             self.__add_ep_part()
         self.setLayout(self.layout)

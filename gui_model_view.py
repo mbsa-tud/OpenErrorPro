@@ -1,14 +1,14 @@
 """
 ErrorPro V6.
-PySide GUI model view class.
+PySide6 GUI model view class.
 """
 
 import os
 
 import pygraphviz as pgv
 
-from PySide import QtGui
-from PySide import QtCore
+from PySide6 import QtWidgets, QtGui
+from PySide6 import QtCore
 
 import epl_drawing
 
@@ -18,12 +18,12 @@ import gui_dialogs
 #TODO, sometimes, expecially just after the run of the GUI the focus do not trasnfers to the cmd line
 
 
-class ModelView(QtGui.QGraphicsView):
+class ModelView(QtWidgets.QGraphicsView):
     """@brief Model view class"""
 
     def __init__(self, main_window):
         """@brief constructor"""
-        # initialization of QtGui.QGraphicsView
+        # initialization of QtWidgets.QGraphicsView
         super(ModelView, self).__init__(main_window)
         self.setMouseTracking(True)
 
@@ -59,12 +59,12 @@ class ModelView(QtGui.QGraphicsView):
 
         # Widgets
         # Graphic scene
-        self.scene = QtGui.QGraphicsScene()
+        self.scene = QtWidgets.QGraphicsScene()
         self.setScene(self.scene)
         # Pixmap that is drawn in the self.scene
         self.pixmap = QtGui.QPixmap(self.model_filename)
         # Logo
-        #self.logo_pixmap = QtGui.QPixmap(self.logo_filename)
+        #self.logo_pixmap = QtWidgets.QPixmap(self.logo_filename)
 
         # Actions for main context menu
         self.actions = {}
@@ -212,8 +212,8 @@ class ModelView(QtGui.QGraphicsView):
         """@brief context menu slot function"""
         super(ModelView, self).contextMenuEvent(event)
         if not event.isAccepted():
-            menu = QtGui.QMenu(self)
-            model_menu = QtGui.QMenu("&Model")
+            menu = QtWidgets.QMenu(self)
+            model_menu = QtWidgets.QMenu("&Model")
             model_menu.addAction(self.actions['add_element'])
             model_menu.addAction(self.actions['add_data'])
             model_menu.addAction(self.actions['add_failure'])
@@ -225,7 +225,7 @@ class ModelView(QtGui.QGraphicsView):
             model_menu.addSeparator()
             model_menu.addAction(self.actions['clear'])
             menu.addMenu(model_menu)
-            view_menu = QtGui.QMenu("&View")
+            view_menu = QtWidgets.QMenu("&View")
             if self.view_stack:
                 if len(self.view_stack) > 1:
                     view_menu.addAction(self.actions['go_back'])
@@ -237,7 +237,7 @@ class ModelView(QtGui.QGraphicsView):
             menu.addMenu(view_menu)
             if [True for element in self.main_window.model.elements.values() \
                 if element['repetitions'] > 1 or element['sub_model']]:
-                compute_menu = QtGui.QMenu("&Compute")
+                compute_menu = QtWidgets.QMenu("&Compute")
                 compute_menu.addAction(self.actions['compute_sub_models_and_repetitions'])
                 menu.addMenu(compute_menu)
             menu.exec_(event.globalPos())
@@ -245,11 +245,8 @@ class ModelView(QtGui.QGraphicsView):
 
     def load(self):
         """@brief load from xml action function"""
-        dialog = QtGui.QFileDialog()
-        dialog.setFilter("*.xml")
-        dialog.setAcceptMode(QtGui.QFileDialog.AcceptOpen)
-        dialog.setFileMode(QtGui.QFileDialog.ExistingFile)
-        fname = dialog.getOpenFileName()
+        dialog = QtWidgets.QFileDialog()
+        fname = dialog.getOpenFileName(self, "Open XML", "", "XML files (*.xml)")
         if fname[0]:
             self.go_top()
             self.main_window.command_le.setText(str("xml.load(model, '" + fname[0] + "')"))
@@ -258,7 +255,7 @@ class ModelView(QtGui.QGraphicsView):
 
     def save(self):
         """@brief save to xml action function"""
-        dialog = QtGui.QFileDialog()
+        dialog = QtWidgets.QFileDialog()
         fname = dialog.getSaveFileName(self, "Save to XML", "*.xml")
         if fname[0]:
             self.go_top()

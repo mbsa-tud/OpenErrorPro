@@ -1,13 +1,13 @@
 """
 ErrorPro V6.
-PySide GUI main window class.
+PySide6 GUI main window class.
 """
 
 import collections
 import traceback
 
-from PySide import QtGui
-from PySide import QtCore
+from PySide6 import QtGui, QtWidgets
+from PySide6 import QtCore
 
 import epl_model
 import epl_logger
@@ -17,12 +17,13 @@ import epl_xml
 
 import gui_model_view
 
-class MainWindow(QtGui.QMainWindow):
+
+class MainWindow(QtWidgets.QMainWindow):
     """@brief Main window class"""
 
     def __init__(self):
         """@brief constructor"""
-        # initialization of QtGui.QMainWindow
+        # initialization of QtWidgets.QMainWindow
         super(MainWindow, self).__init__()
 
         # Layout:
@@ -43,7 +44,7 @@ class MainWindow(QtGui.QMainWindow):
 
         # Widgets:
         # history_te - command history, logger output
-        self.history_te = QtGui.QTextEdit()
+        self.history_te = QtWidgets.QTextEdit()
         self.history_te.setReadOnly(True)
         self.palette = QtGui.QPalette() # for hisotory_te and command_le
         self.palette.setColor(QtGui.QPalette.Base, QtGui.QColor(50, 50, 50))
@@ -53,7 +54,7 @@ class MainWindow(QtGui.QMainWindow):
         self.palette_highlight.setColor(QtGui.QPalette.Text, QtGui.QColor(255, 255, 255))
         self.history_te.setPalette(self.palette)
         # command_le - command line
-        self.command_le = QtGui.QLineEdit()
+        self.command_le = QtWidgets.QLineEdit()
         self.command_le.setPalette(self.palette)
         self.command_le.setText("model.")
         # for press enter and press up down events
@@ -80,18 +81,18 @@ class MainWindow(QtGui.QMainWindow):
 
         # Model view:
         self.model_view = gui_model_view.ModelView(self)
-        #self.model_view QtGui.QGraphicsView()
+        #self.model_view QtWidgets.QGraphicsView()
 
         # Layout
         self.setWindowTitle("OpenErrorPro")
-        widget = QtGui.QWidget()
+        widget = QtWidgets.QWidget()
         self.setCentralWidget(widget)
-        splitter = QtGui.QSplitter()
+        splitter = QtWidgets.QSplitter()
         splitter.setOrientation(QtCore.Qt.Vertical)
         splitter.addWidget(self.model_view)
         splitter.addWidget(self.history_te)
         splitter.setSizes([500, 100])
-        layout = QtGui.QVBoxLayout()
+        layout = QtWidgets.QVBoxLayout()
         layout.addWidget(splitter)
         layout.addWidget(self.command_le)
         widget.setLayout(layout)
@@ -117,7 +118,7 @@ class MainWindow(QtGui.QMainWindow):
                     self.command_le.setText(cmd)
                     self.command_le.setCursorPosition(len(cmd))
                     return True
-        return QtGui.QWidget.eventFilter(self, widget, event)
+        return QtWidgets.QWidget.eventFilter(self, widget, event)
 
     def execute_command(self):
         """@brief command line press enter"""
